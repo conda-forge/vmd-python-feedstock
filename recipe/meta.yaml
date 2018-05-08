@@ -18,23 +18,19 @@ build:
 
 requirements:
   build:
+    - {{ compiler('cxx') }}
+    - perl
+  host:
     - python
     - pip
-    - perl 5.26.0
-    - toolchain
-    - libnetcdf 4.4.*
+    - libnetcdf
     - expat
     - numpy 1.13.*
-    - tk 8.6.*
-    - sqlite 3.22.*
-
+    - tk
+    - sqlite
   run:
     - python
-    - libnetcdf 4.4.*
-    - expat
-    - numpy >=1.13
-    - tk 8.6.*
-    - sqlite >=3.22
+    - {{ pin_compatible('numpy') }}
 
 test:
   requires:
