@@ -30,7 +30,11 @@ requirements:
     - sqlite
   run:
     - python
+    - libnetcdf
     - {{ pin_compatible('numpy') }}
+    - expat
+    - tk
+    - sqlite
 
 test:
   requires:
