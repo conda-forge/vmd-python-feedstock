@@ -12,29 +12,31 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win or osx]
   script: python -m pip install --no-deps --ignore-installed .
 
 requirements:
   build:
+    - perl 5.26.0
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
     - python
     - pip
-    - perl 5.26.0
-    - toolchain
-    - libnetcdf 4.4.*
+    - libnetcdf
     - expat
-    - numpy 1.13.*
-    - tk 8.6.*
-    - sqlite 3.22.*
+    - numpy
+    - tk
+    - sqlite
 
   run:
     - python
-    - libnetcdf 4.4.*
+    - libnetcdf
     - expat
-    - numpy >=1.13
-    - tk 8.6.*
-    - sqlite >=3.22
+    - {{ pin_compatible('numpy') }}
+    - tk
+    - sqlite
 
 test:
   requires:
