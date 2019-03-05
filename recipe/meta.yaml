@@ -1,6 +1,6 @@
 {% set name = "vmd-python" %}
-{% set version = "2.0.10" %}
-{% set sha256 = "ac25c7291208868be51ef1cbb9235e70b0b96f30fcd2ec5eb3af3e31ebd66ca9" %}
+{% set version = "3.0.0" %}
+{% set sha256 = "fb7b3509730e8649781135f52af8f6fd0d2d684525426e1e959a37bc57316804" %}
 
 package:
   name: {{ name|lower }}
@@ -12,8 +12,8 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1002
-  skip: true  # [win or osx]
+  number: 1003
+  skip: true  # [win]
   script: python -m pip install --no-deps --ignore-installed .
 
 requirements:
