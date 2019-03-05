@@ -1,6 +1,6 @@
 {% set name = "vmd-python" %}
-{% set version = "3.0.0" %}
-{% set sha256 = "fb7b3509730e8649781135f52af8f6fd0d2d684525426e1e959a37bc57316804" %}
+{% set version = "3.0.1" %}
+{% set sha256 = "3be169317a73e1a01bc8ce17311be0780e7fe3b9cf9772a747f9a6349ee92d8a" %}
 
 package:
   name: {{ name|lower }}
