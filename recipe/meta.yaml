@@ -12,8 +12,8 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1003
-  skip: true  # [win]
+  number: 1004
+  skip: true  # [win or (osx and py3k)]
   script: python -m pip install --no-deps --ignore-installed .
 
 requirements:
