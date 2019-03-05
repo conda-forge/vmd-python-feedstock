@@ -22,8 +22,8 @@ with trajectories, and many assorted plugins.
 Current build status
 ====================
 
-[![Linux](https://img.shields.io/circleci/project/github/conda-forge/vmd-conda-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/vmd-conda-feedstock)
-[![OSX](https://img.shields.io/travis/conda-forge/vmd-conda-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/vmd-conda-feedstock)
+[![Linux](https://img.shields.io/circleci/project/github/conda-forge/vmd-python-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/vmd-python-feedstock)
+[![OSX](https://img.shields.io/travis/conda-forge/vmd-python-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/vmd-python-feedstock)
 ![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 
 Current release info
