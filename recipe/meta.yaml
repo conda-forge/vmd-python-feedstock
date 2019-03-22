@@ -1,26 +1,26 @@
 {% set name = "vmd-python" %}
-{% set version = "3.0.1" %}
-{% set sha256 = "3be169317a73e1a01bc8ce17311be0780e7fe3b9cf9772a747f9a6349ee92d8a" %}
+{% set version = "3.0.4" %}
+{% set sha256 = "44f3ebf9db6782bab1dad0be1c3fd5ba7242cab8bc9d2cd5832b3ae22a1e06c0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
+  fn: {{ name }}-v{{ version }}.tar.gz
   url: https://github.com/Eigenstate/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
 
 build:
-  number: 1005
+  number: 1000
   skip: true  # [win or (osx and py3k)]
-  script: {{ PYTHON }} -m pip install --no-deps --ignore-installed .
+  script: python -m pip install --no-deps --ignore-installed .
 
 requirements:
   build:
     - perl
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-
   host:
     - python
     - pip
@@ -41,7 +41,6 @@ requirements:
 test:
   requires:
     - pytest
-
   commands:
     - py.test --pyargs vmd
     - conda inspect linkages -p $PREFIX {{ name|lower }}  # [not win]
