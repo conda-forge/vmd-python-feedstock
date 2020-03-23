@@ -27,8 +27,6 @@ perl:
 pin_run_as_build:
   expat:
     max_pin: x.x
-  libnetcdf:
-    max_pin: x.x.x
   perl:
     max_pin: x.x.x
   python:
@@ -39,8 +37,11 @@ pin_run_as_build:
   tk:
     max_pin: x.x
 python:
-- '2.7'
+- 3.6.* *_cpython
 sqlite:
 - '3'
 tk:
 - '8.6'
+zip_keys:
+- - numpy
+  - python
