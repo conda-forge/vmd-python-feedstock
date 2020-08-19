@@ -36,7 +36,6 @@ requirements:
     - expat
     - {{ pin_compatible('numpy') }}
     - tk
-    - setuptools
     - sqlite
 
 test:
