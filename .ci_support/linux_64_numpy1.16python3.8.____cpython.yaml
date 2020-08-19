@@ -1,0 +1,45 @@
+c_compiler:
+- gcc
+c_compiler_version:
+- '7'
+channel_sources:
+- conda-forge,defaults
+channel_targets:
+- conda-forge main
+cxx_compiler:
+- gxx
+cxx_compiler_version:
+- '7'
+docker_image:
+- condaforge/linux-anvil-comp7
+expat:
+- '2.2'
+libnetcdf:
+- 4.7.4
+numpy:
+- '1.16'
+perl:
+- 5.26.2
+pin_run_as_build:
+  expat:
+    max_pin: x.x
+  perl:
+    max_pin: x.x.x
+  python:
+    min_pin: x.x
+    max_pin: x.x
+  sqlite:
+    max_pin: x
+  tk:
+    max_pin: x.x
+python:
+- 3.8.* *_cpython
+sqlite:
+- '3'
+target_platform:
+- linux-64
+tk:
+- '8.6'
+zip_keys:
+- - numpy
+  - python
