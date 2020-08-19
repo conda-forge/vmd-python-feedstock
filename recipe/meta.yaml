@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 3
+  number: 4
   skip: true  # [win]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
 
@@ -36,6 +36,7 @@ requirements:
     - expat
     - {{ pin_compatible('numpy') }}
     - tk
+    - setuptools
     - sqlite
 
 test:
