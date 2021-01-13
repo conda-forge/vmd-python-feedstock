@@ -19,7 +19,7 @@ libnetcdf:
 macos_machine:
 - x86_64-apple-darwin13.4.0
 numpy:
-- '1.16'
+- '1.19'
 perl:
 - 5.26.2
 pin_run_as_build:
@@ -35,7 +35,7 @@ pin_run_as_build:
   tk:
     max_pin: x.x
 python:
-- 3.7.* *_cpython
+- 3.7.* *_73_pypy
 sqlite:
 - '3'
 target_platform:
