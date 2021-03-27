@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 5
+  number: 6
   skip: true  # [win]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
 
@@ -44,8 +44,6 @@ test:
     - pytest
   commands:
     - py.test --pyargs vmd
-    - conda inspect linkages -p $PREFIX {{ name|lower }}  # [not win]
-    - conda inspect objects -p $PREFIX {{ name|lower }}  # [osx]
 
 about:
   home: http://github.com/Eigenstate/vmd-python
