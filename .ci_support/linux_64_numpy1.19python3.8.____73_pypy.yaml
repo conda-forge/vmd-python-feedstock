@@ -31,7 +31,7 @@ pin_run_as_build:
   tk:
     max_pin: x.x
 python:
-- 3.9.* *_cpython
+- 3.8.* *_73_pypy
 sqlite:
 - '3'
 target_platform:
