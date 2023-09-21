@@ -21,6 +21,7 @@ requirements:
     - perl
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - make
   host:
     - python
     - pip
