@@ -1,6 +1,6 @@
 {% set name = "vmd-python" %}
-{% set version = "3.1.0" %}
-{% set sha256 = "b155b76d40ff9198b6c9fb426cf56158eb6d663419e9cda96fea8947eb751b3b" %}
+{% set version = "3.1.1" %}
+{% set sha256 = "ce17191594eae7745bb76f76c8c5c68d19bad7472ceb36537732197cec7b37ed" %}
 
 package:
   name: {{ name|lower }}
@@ -38,6 +38,7 @@ requirements:
     - {{ pin_compatible('numpy') }}
     - tk
     - sqlite
+    - importlib-resources
 
 test:
   requires:
