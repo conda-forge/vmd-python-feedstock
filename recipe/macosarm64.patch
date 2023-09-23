@@ -1,0 +1,107 @@
+diff --git a/setup.py b/setup.py
+index 7ac3817..06aa324 100644
+--- a/setup.py
++++ b/setup.py
+@@ -398,6 +398,8 @@ class VMDBuild(DistutilsBuild):
+         elif "Darwin" in osys:
+             if "x86_64" in mach:
+                 target = "MACOSXX86_64"
++            elif 'arm64' in mach:
++                target = "MACOSXARM64"
+             elif "PowerPC" in mach:
+                 target = "MACOSX"
+             else:
+diff --git a/vmd/plugins/Make-arch b/vmd/plugins/Make-arch
+index aa50b0f..1aa0ae0 100755
+--- a/vmd/plugins/Make-arch
++++ b/vmd/plugins/Make-arch
+@@ -113,6 +113,25 @@ MACOSXX86_64:
+ 	"SHLD = $(CXX) -bundle" \
+ 	"TCLSHLD = $(CXX) -dynamiclib"
+ 
++MACOSXARM64:
++	$(MAKE) dynlibs staticlibs bins \
++	"ARCH = MACOSXARM64" \
++	"COPTO = -m64 -fPIC -o " \
++	"LOPTO = -m64 -fPIC $(LDFLAGS) -o " \
++	"CC = $(CC)" \
++	"CXX = $(CXX)" \
++	"DEF = -D" \
++	"CCFLAGS = $(CFLAGS) -m64 -Os -Wall -fPIC -dynamic" \
++	"CXXFLAGS = $(CXXFLAGS) -m64 -Os -Wall -fPIC -dynamic" \
++	"TCLLDFLAGS = $(TCLLDFLAGS)" \
++	"NETCDFLDFLAGS = $(NETCDFLDFLAGS)" \
++	"AR = $(AR)" \
++	"NM = $(NM) -p" \
++	"RANLIB = ranlib" \
++	"SHLD = $(CXX) -bundle" \
++	"TCLSHLD = $(CXX) -dynamiclib"
++
++
+ WIN32:
+ 	$(MAKE) dynlibs win32staticlibs win32bins \
+ 	"ARCH = WIN32" \
+diff --git a/vmd/plugins/rnaview/src/xml2ps.c b/vmd/plugins/rnaview/src/xml2ps.c
+index 976d739..af63639 100644
+--- a/vmd/plugins/rnaview/src/xml2ps.c
++++ b/vmd/plugins/rnaview/src/xml2ps.c
+@@ -20,6 +20,7 @@ the chains.
+ # include <time.h>
+ # include "xml2ps.h"
+ # include "nrutil.h"
++
+ # define XBIG 1.0e+18   
+ # define FALSE 0 
+ # define TRUE 1
+@@ -37,6 +38,7 @@ void read_sugar_syn(char *inpfile, long **sugar_syn);
+ void get_sugar_syn(FILE *inp, char *value_ch);
+ void get_chain_broken(long nres, double **a, double **b, long *chain_broken);
+ 
++void get_BDIR(char *BDIR, char *filename);
+ 
+ 
+ FILE  *psfile; 
+diff --git a/vmd/vmd_src/configure b/vmd/vmd_src/configure
+index feaf6b8..e0a818f 100755
+--- a/vmd/vmd_src/configure
++++ b/vmd/vmd_src/configure
+@@ -151,7 +151,7 @@ if (!(-e "plugins")) {
+ 
+ #################### Parse command line options   ###########
+ # list of allowed architectures
+-@archlist=('LINUX', 'LINUXAMD64', 'LINUXPPC64', 'MACOSX', 'MACOSXX86', 'MACOSXX86_64', 'WIN32', 'WIN64');
++@archlist=('LINUX', 'LINUXAMD64', 'LINUXPPC64', 'MACOSX', 'MACOSXX86', 'MACOSXX86_64', 'WIN32', 'WIN64', 'MACOSXARM64');
+ 
+ if ($#ARGV == -1) {
+     $text = `cat configure.options`;
+@@ -2139,7 +2139,7 @@ if ($config_arch eq "MACOSX") {
+ }
+ 
+ 
+-if ($config_arch eq "MACOSXX86" || $config_arch eq "MACOSXX86_64") {
++if ($config_arch eq "MACOSXX86" || $config_arch eq "MACOSXX86_64" || $config_arch eq "MACOSXARM64") {
+     $def_imageviewer="/usr/bin/open %s";
+ 
+     if ($config_lp64) {
+diff --git a/vmd/vmd_src/src/macosxvmdstart.C b/vmd/vmd_src/src/macosxvmdstart.C
+index 3f70ad8..4f22de0 100644
+--- a/vmd/vmd_src/src/macosxvmdstart.C
++++ b/vmd/vmd_src/src/macosxvmdstart.C
+@@ -21,7 +21,7 @@
+ // only compile this file if we're building on MacOS X 
+ // and when the target build is meant for an application bundle install
+ // rather than a traditional X11/Unix style VMD install
+-#if !defined(VMDNOMACBUNDLE) && (defined(ARCH_MACOSX) || defined(ARCH_MACOSXX86) || defined(ARCH_MACOSXX86_64))
++#if !defined(VMDNOMACBUNDLE) && (defined(ARCH_MACOSX) || defined(ARCH_MACOSXX86) || defined(ARCH_MACOSXX86_64) || defined(ARCH_MACOSXARM64))
+ #include <Carbon/Carbon.h>    /* Carbon APIs for process management */
+ #include <stdlib.h>
+ #include <stdio.h>            
+@@ -70,7 +70,7 @@ static char * vmd_get_vmddir(void) {
+   bundledir = (char *) malloc(2048 * sizeof(UInt8));
+   memset(bundledir, 0, 2048 * sizeof(UInt8));
+ 
+-#if defined(ARCH_MACOSXX86_64)
++#if defined(ARCH_MACOSXX86_64) || defined(ARCH_MACOSXARM64)
+   //
+   // CoreFoundation/Cocoa-based application bundle path query code
+   //
