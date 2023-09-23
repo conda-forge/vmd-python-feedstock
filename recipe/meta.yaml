@@ -1,6 +1,6 @@
 {% set name = "vmd-python" %}
-{% set version = "3.0.6" %}
-{% set sha256 = "bb98228ff5137ad9db294ba1085f6f7843cc1abcf7fab2c662cb5e2f71f550bd" %}
+{% set version = "3.1.2" %}
+{% set sha256 = "3e93a4c5f6127ca68f32fd338f2c7a216b92e416a923c6729ac3d531977e61d2" %}
 
 package:
   name: {{ name|lower }}
@@ -12,15 +12,16 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 6
+  number: 0
   skip: true  # [win]
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
+  script: python -m pip install --no-deps --ignore-installed .
 
 requirements:
   build:
     - perl
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - make
   host:
     - python
     - pip
@@ -36,14 +37,16 @@ requirements:
     - expat
     - {{ pin_compatible('numpy') }}
     - tk
-    - setuptools
     - sqlite
+    - importlib-resources
 
 test:
   requires:
     - pytest
   commands:
     - py.test --pyargs vmd
+    - conda inspect linkages -p $PREFIX {{ name|lower }}  # [not win]
+    - conda inspect objects -p $PREFIX {{ name|lower }}  # [osx]
 
 about:
   home: http://github.com/Eigenstate/vmd-python
