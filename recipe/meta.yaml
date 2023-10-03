@@ -1,6 +1,6 @@
 {% set name = "vmd-python" %}
-{% set version = "3.1.2" %}
-{% set sha256 = "3e93a4c5f6127ca68f32fd338f2c7a216b92e416a923c6729ac3d531977e61d2" %}
+{% set version = "3.1.4" %}
+{% set sha256 = "4fbf1140ed5b3897e988fbd9a43746e40e10dffc1b1b51a3bf94841fdd3b3700" %}
 
 package:
   name: {{ name|lower }}
@@ -22,6 +22,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - make
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - numpy
   host:
     - python
     - pip
