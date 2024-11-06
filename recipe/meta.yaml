@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
 
@@ -20,6 +20,7 @@ requirements:
   build:
     - perl
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - make
     - python                                 # [build_platform != target_platform]
@@ -38,7 +39,6 @@ requirements:
     - python
     - libnetcdf
     - expat
-    - {{ pin_compatible('numpy') }}
     - tk
     - sqlite
     - importlib-resources
