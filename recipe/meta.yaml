@@ -1,6 +1,6 @@
 {% set name = "vmd-python" %}
-{% set version = "3.1.4" %}
-{% set sha256 = "4fbf1140ed5b3897e988fbd9a43746e40e10dffc1b1b51a3bf94841fdd3b3700" %}
+{% set version = "3.1.6" %}
+{% set sha256 = "0cbf0ce74193bfc837b1552bc1bc5c320ef1f32004e18418679884a62740aad7" %}
 
 package:
   name: {{ name|lower }}
@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 0
   skip: true  # [win]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
 
@@ -20,6 +20,7 @@ requirements:
   build:
     - perl
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - make
     - python                                 # [build_platform != target_platform]
