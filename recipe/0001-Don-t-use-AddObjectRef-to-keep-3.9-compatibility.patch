@@ -1,0 +1,29 @@
+From dfd970d068dda391a040a51b858576db52568ca3 Mon Sep 17 00:00:00 2001
+Message-ID: <dfd970d068dda391a040a51b858576db52568ca3.1738126315.git.robin@robinbetz.com>
+From: Robin Betz <robin@robinbetz.com>
+Date: Tue, 28 Jan 2025 20:48:46 -0800
+Subject: [PATCH] Don't use AddObjectRef to keep 3.9 compatibility
+
+Only in Stable ABI >= 3.10.
+
+Signed-off-by: Robin Betz <robin@robinbetz.com>
+---
+ vmd/vmd_src/src/py_selection.C | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/vmd/vmd_src/src/py_selection.C b/vmd/vmd_src/src/py_selection.C
+index a4903f8..0725341 100755
+--- a/vmd/vmd_src/src/py_selection.C
++++ b/vmd/vmd_src/src/py_selection.C
+@@ -210,7 +210,7 @@ PyObject* initselection() {
+ #if PY_MAJOR_VERSION >= 3
+   PyObject *m = PyModule_Create(&selectiondef);
+   PyObject *atomsel_type = get_type("atomsel");
+-  PyModule_AddObjectRef(m, "selection", atomsel_type);
++  PyModule_AddObject(m, "selection", atomsel_type);
+   if (PyErr_Occurred()) {
+       Py_XDECREF(atomsel_type);
+       return NULL;
+-- 
+2.47.1
+
