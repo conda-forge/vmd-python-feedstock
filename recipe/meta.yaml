@@ -1,6 +1,6 @@
 {% set name = "vmd-python" %}
-{% set version = "3.1.4" %}
-{% set sha256 = "4fbf1140ed5b3897e988fbd9a43746e40e10dffc1b1b51a3bf94841fdd3b3700" %}
+{% set version = "3.1.6" %}
+{% set sha256 = "0cbf0ce74193bfc837b1552bc1bc5c320ef1f32004e18418679884a62740aad7" %}
 
 package:
   name: {{ name|lower }}
@@ -10,9 +10,11 @@ source:
   fn: {{ name }}-v{{ version }}.tar.gz
   url: https://github.com/Eigenstate/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
+  patches:
+    - 0001-Don-t-use-AddObjectRef-to-keep-3.9-compatibility.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [win]
   script: {{ PYTHON }} -m pip install . --no-deps -vv
 
@@ -21,9 +23,12 @@ requirements:
     - perl
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
     - make
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - setuptools
+    - swig
     - numpy
   host:
     - python
@@ -32,6 +37,7 @@ requirements:
     - expat
     - numpy
     - tk
+    - setuptools
     - sqlite
 
   run:
@@ -41,7 +47,6 @@ requirements:
     - {{ pin_compatible('numpy') }}
     - tk
     - sqlite
-    - importlib-resources
 
 test:
   requires:
