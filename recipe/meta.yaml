@@ -1,6 +1,6 @@
 {% set name = "vmd-python" %}
-{% set version = "3.1.6" %}
-{% set sha256 = "0cbf0ce74193bfc837b1552bc1bc5c320ef1f32004e18418679884a62740aad7" %}
+{% set version = "3.1.7" %}
+{% set sha256 = "4b5525e7372e827655914cc716832739007c6ab82f1fc9c453f42a0814d9c9f1" %}
 
 package:
   name: {{ name|lower }}
@@ -10,8 +10,6 @@ source:
   fn: {{ name }}-v{{ version }}.tar.gz
   url: https://github.com/Eigenstate/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
-  patches:
-    - 0001-Don-t-use-AddObjectRef-to-keep-3.9-compatibility.patch
 
 build:
   number: 0
