@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rodrigo Goya <rodrigo.goya@abcellera.com>
+Date: Sat, 14 Nov 2026 07:58:32 +0000
+Subject: [PATCH 3/4] clustalw: give fast_nj_tree a full prototype
+
+GCC 15 defaults to C23, where an empty parameter list declares a
+function taking no arguments. The block-scope declaration
+'void fast_nj_tree();' in nj_tree() therefore conflicts with the call
+fast_nj_tree(tree_description, tree) and with the definition below it.
+Declare the full prototype instead.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ vmd/plugins/clustalw/src/trees.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/vmd/plugins/clustalw/src/trees.c b/vmd/plugins/clustalw/src/trees.c
+index f092f54..945f5fc 100644
+--- a/vmd/plugins/clustalw/src/trees.c
++++ b/vmd/plugins/clustalw/src/trees.c
+@@ -628,7 +628,7 @@ void nj_tree(char **tree_description, FILE *tree)
+ #else /* ORIGINAL_NJ_TREE */
+ 
+ void nj_tree(char **tree_description, FILE *tree) {
+-	void fast_nj_tree();
++	void fast_nj_tree(char **tree_description, FILE *tree);
+  
+ 	/*fprintf(stderr, "****** call fast_nj_tree() !!!! ******\n");*/
+ 	fast_nj_tree(tree_description, tree);
