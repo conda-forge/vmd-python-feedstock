@@ -12,9 +12,10 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
-  skip: true  # [win]
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
+  number: 1
+  # Python 3.13 removed C-API calls VMD still uses (PyEval_CallObject,
+  # PySys_AddWarnOption). Re-enable once fixed upstream in vmd-python.
+  skip: true  # [win or py>=313]
 
 requirements:
   build:
