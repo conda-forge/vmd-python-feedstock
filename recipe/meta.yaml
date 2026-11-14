@@ -14,6 +14,7 @@ source:
     # Fixes submitted upstream to Eigenstate/vmd-python; drop on next release
     - patches/0001-rnaview-give-process_3d_fig-a-full-prototype.patch
     - patches/0002-Fix-build-with-Python-3.13.patch
+    - patches/0003-clustalw-give-fast_nj_tree-a-full-prototype.patch
 
 build:
   number: 1
