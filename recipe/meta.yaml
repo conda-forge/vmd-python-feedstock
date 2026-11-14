@@ -17,6 +17,7 @@ source:
     - patches/0003-clustalw-give-fast_nj_tree-a-full-prototype.patch
     - patches/0004-stamp-use-full-prototypes-for-C23-GCC-15.patch
     - patches/0005-Keep-DeprecationWarnings-visible-on-Python-3.13.patch
+    - patches/0006-stamp-convert-remaining-K-R-definitions-for-C23.patch
 
 build:
   number: 1

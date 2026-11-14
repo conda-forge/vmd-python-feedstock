@@ -1,0 +1,121 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rodrigo Goya <rodrigo.goya@abcellera.com>
+Date: Sat, 14 Nov 2026 15:54:16 -0700
+Subject: [PATCH 6/6] stamp: convert remaining K&R definitions for C23
+
+C23 removed old-style function definitions, and clang -std=c23 rejects
+them. Convert eigen_, esort_, disp, present, addsco, ppath, ppath2 and
+ppath3 to prototype form, matching their existing declarations.
+---
+ vmd/plugins/stamp/src/qkfit.c     |  8 ++------
+ vmd/plugins/stamp/src/slow_scan.c |  4 +---
+ vmd/plugins/stamp/src/swstruc.c   | 27 +++++----------------------
+ 3 files changed, 8 insertions(+), 31 deletions(-)
+
+diff --git a/vmd/plugins/stamp/src/qkfit.c b/vmd/plugins/stamp/src/qkfit.c
+index 1164380..b958449 100644
+--- a/vmd/plugins/stamp/src/qkfit.c
++++ b/vmd/plugins/stamp/src/qkfit.c
+@@ -381,9 +381,7 @@ L200:
+ /* ---- ORDER AS EIGENVALUES. */
+ /* ---- N - ORDER OF MATRICES A & R. */
+ /* ---- MV = 0 TO COMPUTE EIGENVALUES & EIGENVECTORS. */
+-/* Subroutine */ int eigen_(a, r, n, mv)
+-doublereal *a, *r;
+-integer *n, *mv;
++/* Subroutine */ int eigen_(doublereal *a, doublereal *r, integer *n, integer *mv)
+ {
+     /* System generated locals */
+     integer i_1, i_2;
+@@ -613,9 +611,7 @@ L165:
+ S*/
+ } /* eigen_ */
+ 
+-/* Subroutine */ int esort_(a, r, n, mv)
+-doublereal *a, *r;
+-integer *n, *mv;
++/* Subroutine */ int esort_(doublereal *a, doublereal *r, integer *n, integer *mv)
+ {
+     /* System generated locals */
+     integer i_1, i_2, i_3;
+diff --git a/vmd/plugins/stamp/src/slow_scan.c b/vmd/plugins/stamp/src/slow_scan.c
+index 084ebf9..b235b5b 100644
+--- a/vmd/plugins/stamp/src/slow_scan.c
++++ b/vmd/plugins/stamp/src/slow_scan.c
+@@ -714,9 +714,7 @@ int slow_scan(struct domain_loc qdomain, struct parameters *parms) {
+    return 0;
+ }
+ 
+-int disp(domain,OUTPUT)
+-struct domain_loc domain;
+-FILE *OUTPUT;
++int disp(struct domain_loc domain, FILE *OUTPUT)
+ {
+ 	int i/*,j,k*/;
+ 	fprintf(OUTPUT,"The first ten coordinates\n");
+diff --git a/vmd/plugins/stamp/src/swstruc.c b/vmd/plugins/stamp/src/swstruc.c
+index 1338882..b7e5899 100644
+--- a/vmd/plugins/stamp/src/swstruc.c
++++ b/vmd/plugins/stamp/src/swstruc.c
+@@ -220,11 +220,7 @@ then check if the new score is > the old score.  If it is, then store the
+ new path in the result and return 1.  If it isn't then do nothing, but return
+ 0.
+ ----------------------------------------------------------------------------*/
+-int present(new, result)
+-     
+-     struct path *new;
+-     struct olist *result;
+-     
++int present(struct path *new, struct olist *result)
+ {
+   int i;
+   for (i = 0; i < result->len; ++i) {
+@@ -243,12 +239,7 @@ int present(new, result)
+ /**************************************************************************
+ addsco
+ --------------------------------------------------------------------------*/
+-void addsco(new,result,total)
+-     
+-     struct path *new;
+-     struct olist *result;
+-     int *total;
+-     
++void addsco(struct path *new, struct olist *result, int *total)
+ {
+   ++result->len;
+   ++*total;
+@@ -264,11 +255,7 @@ void addsco(new,result,total)
+ /***************************************************************************
+ ppath - print out the paths as stored in result array
+ ---------------------------------------------------------------------------*/
+-void ppath(result,lena)
+-
+-struct olist *result;
+-int lena;
+-
++void ppath(struct olist *result, int lena)
+ {
+   int i,j;
+   
+@@ -290,9 +277,7 @@ int lena;
+ /***************************************************************************
+ ppath2 - print out the paths as pointed to by sortarr
+ ---------------------------------------------------------------------------*/
+-void ppath2(sortarr,total)
+-     struct path *sortarr;
+-     int *total;
++void ppath2(struct path *sortarr, int *total)
+ {
+   int i;
+   for(i=0; i < *total; ++i){
+@@ -310,9 +295,7 @@ void ppath2(sortarr,total)
+ /*************************************************************************
+ ppath3 write out genplot file for the paths obtained
+ -------------------------------------------------------------------------*/
+-void  ppath3(sortarr,total,lena,lenb)
+-     struct path *sortarr;
+-     int *total,lena,lenb;
++void  ppath3(struct path *sortarr, int *total, int lena, int lenb)
+ {
+   int i;
+   FILE *fp;
