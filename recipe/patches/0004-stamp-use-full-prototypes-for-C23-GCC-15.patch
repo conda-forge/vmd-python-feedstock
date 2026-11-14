@@ -1,0 +1,121 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rodrigo Goya <rodrigo.goya@abcellera.com>
+Date: Sat, 14 Nov 2026 07:59:13 +0000
+Subject: [PATCH 4/4] stamp: use full prototypes for C23 (GCC 15)
+
+GCC 15 defaults to C23, where an empty parameter list declares a
+function taking no arguments. Several stamp sources relied on
+old-style declarations and no longer compile:
+
+- qkfit.c: drop the f2c-style 'double sqrt(), d_sign(), atan(), cos()'
+  redeclarations in favour of <math.h> (d_sign is unused), and declare
+  eigen_/esort_ with their parameter types.
+- matinv.c: drop block-scope 'vector()'/'free_vector()' redeclarations
+  that shadow the full file-scope prototypes.
+- swstruc.c: drop the 'FILE *fopen()' redeclaration; stdio.h declares it.
+- dosort.c: make the qsort comparator take 'const void *' arguments.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ vmd/plugins/stamp/src/dosort.c  |  8 ++++----
+ vmd/plugins/stamp/src/matinv.c  |  3 +--
+ vmd/plugins/stamp/src/qkfit.c   | 11 +++--------
+ vmd/plugins/stamp/src/swstruc.c |  2 +-
+ 4 files changed, 9 insertions(+), 15 deletions(-)
+
+diff --git a/vmd/plugins/stamp/src/dosort.c b/vmd/plugins/stamp/src/dosort.c
+index b2fc97d..180746f 100644
+--- a/vmd/plugins/stamp/src/dosort.c
++++ b/vmd/plugins/stamp/src/dosort.c
+@@ -33,7 +33,7 @@
+ *****************************************************************************/
+ #include <stamp.h>
+ 
+-int comp();
++int comp(const void *left, const void *right);
+ 
+ /*************************************************************************
+ dosort:  Version 2:  create the sortarr array, then copy the values
+@@ -91,8 +91,8 @@ struct path *dosort(struct olist *result, int *lena, int *total) {
+ /*************************************************************************
+ comp:  compare two scores in the sortarr array
+ -------------------------------------------------------------------------*/
+-int comp(left,right)
+-     struct path *left, *right;
++int comp(const void *left, const void *right)
+ {
+-  return right->score - left->score;
++  const struct path *l = left, *r = right;
++  return r->score - l->score;
+ }
+diff --git a/vmd/plugins/stamp/src/matinv.c b/vmd/plugins/stamp/src/matinv.c
+index acfc64e..13973be 100644
+--- a/vmd/plugins/stamp/src/matinv.c
++++ b/vmd/plugins/stamp/src/matinv.c
+@@ -106,8 +106,7 @@ int ludcmp(float **a, int n, int *indx, float *d)
+ {
+ 	int i,imax=0,j,k;
+ 	float big,dum,sum,temp;
+-	float *vv,*vector();
+-	void free_vector();
++	float *vv;
+ 
+ 	vv=vector(1,n);
+ 	*d=1.0;
+diff --git a/vmd/plugins/stamp/src/qkfit.c b/vmd/plugins/stamp/src/qkfit.c
+index 12ff966..1164380 100644
+--- a/vmd/plugins/stamp/src/qkfit.c
++++ b/vmd/plugins/stamp/src/qkfit.c
+@@ -66,6 +66,7 @@
+ */
+ 
+ #include <stdio.h>
++#include <math.h>
+ #include <f2c.h>
+ 
+ /* Table of constant values */
+@@ -99,9 +100,6 @@ int qkfit(doublereal *umat, doublereal *rtsum, doublereal *r, integer *entry_) {
+     integer i_1;
+     static doublereal equiv_7[9];
+ 
+-    /* Builtin functions */
+-    double sqrt(), d_sign(), atan(), cos();
+-
+     /* Local variables */
+     static doublereal diff;
+     static integer isig;
+@@ -110,9 +108,9 @@ int qkfit(doublereal *umat, doublereal *rtsum, doublereal *r, integer *entry_) {
+ #define b (equiv_7)
+     static integer i, j, k;
+     static doublereal s, t;
+-    extern /* Subroutine */ int eigen_();
++    extern /* Subroutine */ int eigen_(doublereal *, doublereal *, integer *, integer *);
+     static doublereal digav, theta, argsq, b1, b2;
+-    extern /* Subroutine */ int esort_();
++    extern /* Subroutine */ int esort_(doublereal *, doublereal *, integer *, integer *);
+     static doublereal cos3th, cc, b13, dd, b23;
+     static integer ia;
+     static doublereal b33, qq, rt;
+@@ -391,9 +389,6 @@ integer *n, *mv;
+     integer i_1, i_2;
+     doublereal d_1;
+ 
+-    /* Builtin functions */
+-    double sqrt();
+-
+     /* Local variables */
+     static doublereal cosx, sinx, cosx2, sinx2;
+     static integer i, j, l, m;
+diff --git a/vmd/plugins/stamp/src/swstruc.c b/vmd/plugins/stamp/src/swstruc.c
+index 16a919c..1338882 100644
+--- a/vmd/plugins/stamp/src/swstruc.c
++++ b/vmd/plugins/stamp/src/swstruc.c
+@@ -315,7 +315,7 @@ void  ppath3(sortarr,total,lena,lenb)
+      int *total,lena,lenb;
+ {
+   int i;
+-  FILE *fp, *fopen();
++  FILE *fp;
+   fp = fopen("test.genplot","w");
+   
+   fprintf(fp,"!PAPER = A4H\n");
