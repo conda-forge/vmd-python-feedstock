@@ -13,7 +13,9 @@ source:
 
 build:
   number: 1
-  skip: true  # [win]
+  # Python 3.13 removed C-API calls VMD still uses (PyEval_CallObject,
+  # PySys_AddWarnOption). Re-enable once fixed upstream in vmd-python.
+  skip: true  # [win or py>=313]
 
 requirements:
   build:
