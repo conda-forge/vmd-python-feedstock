@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Rodrigo Goya <rodrigo.goya@abcellera.com>
+Date: Fri, 13 Nov 2026 21:05:54 -0700
+Subject: [PATCH 1/2] rnaview: give process_3d_fig a full prototype
+
+C23 (the default in GCC 15) treats an empty parameter list as "no
+arguments", so the call in rnaview.c with eleven arguments becomes a
+hard error. Copy the signature from the definition in vrml.c.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ vmd/plugins/rnaview/src/rna_header.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/vmd/plugins/rnaview/src/rna_header.h b/vmd/plugins/rnaview/src/rna_header.h
+index 169a326..f40652a 100644
+--- a/vmd/plugins/rnaview/src/rna_header.h
++++ b/vmd/plugins/rnaview/src/rna_header.h
+@@ -430,7 +430,9 @@ void rot_2_Yaxis (long num_residue,  double *z, long **seidx, double **xyz );
+ 
+ void rot_mol (long num_residue,  char **AtomName,char **ResName, char *ChainID,
+               long *ResSeq, double **xyz, long **seidx, long *RY);
+-void process_3d_fig();
++void process_3d_fig(char *pdbfile, long num_residue, char *bseq, long **seidx,
++                    char **AtomName,char **ResName, char *ChainID,double **xyz,
++                    long num_pair_tot, char **pair_type, long **bs_pairs_tot);
+ /*
+ void process_2d_fig(long num_residue, char *bseq, long **seidx, long *RY,
+                     char **AtomName, char **ResName, char *ChainID,
